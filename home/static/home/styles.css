@@ -1,0 +1,55 @@
+.bg-d {
+    background-color: #006d77 !important;
+    color: white !important;
+}
+
+.bg-3 {
+    background-color: #83c5be !important;
+    color: #022b3a !important;
+}
+
+.bg-2 {
+    background-color: #ffddd2 !important;
+    color: #022b3a !important;
+}
+
+.bg-1 {
+    background-color: #edf6f9 !important;
+    color: #022b3a !important;
+}
+
+.bg-l {
+    background-color: #ffffff !important;
+    color: #022b3a !important;
+}
+
+body {
+    color: #022b3a;
+}
+
+
+td {
+    /* background-color: #ffffff; */
+    color: #022b3a !important; 
+}
+
+.card {
+    border-radius: 5px !important;
+}
+
+.card-header {
+    border-top-left-radius: 5px !important;
+    border-top-right-radius: 5px !important;
+}
+
+.card-img {
+    border-radius: 5px !important;
+}
+
+table a {
+    color: #022b3a;
+    font-weight: 700;
+}
+#home {
+    background: url("https://wallpapershome.com/images/pages/pic_h/4407.jpg");
+}

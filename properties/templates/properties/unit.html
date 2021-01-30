@@ -1,0 +1,162 @@
+{% extends 'home/base.html' %}
+
+{% block header %}
+
+{% endblock header %}
+
+
+
+{% block body %}
+
+<div class="bg-d card card-header px-3 pb-1 mb-3 shadow-sm">
+    <div class="d-flex justify-content-between">
+        <h4 class="">Unit {{unit}}</h4>
+        <h4 class="">Test</h4>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-12">
+        <h4>Details:</h4>
+        <div class="d-flex flex-wrap justify-content-between">
+            <div>
+                <h5 class="font-weight-normal text-center">Market Rent:</h5>
+                <h5 class="font-weight-normal text-center">{{unit.market_rent}}$ / <small> mon</small></h5>
+            </div>
+            <h5 class="font-weight-normal text-center">Bedrooms: {{unit.beds}}</h5>
+            <h5 class="font-weight-normal text-center">Bathrooms: {{unit.baths}}</h5>
+        </div>
+        <hr>
+    </div>
+
+    <div class="table-responsive col-12">
+        <h4>Leases</h4>
+        <table class="table table-hover table-sm table-striped shadow-sm">
+            <thead class="bg-3">
+                <tr>
+                    <th scope="col">Status</th>
+                    <th scope="col">Residence</th>
+                    <th scope="col">Tenant</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lease in unit.leases.all %}
+                <tr>
+                    {% if lease.status == 'future' %}
+                    <th scope="row" class="text-light bg-primary">{{lease.status|title}}</th>
+                    {% elif lease.status == 'active' %}
+                    <th scope="row" class="text-light bg-success">{{lease.status|title}}</th>
+                    {% elif lease.status == 'past' %}
+                    <th scope="row" class="text-light bg-danger">{{lease.status|title}}</th>
+                    {% endif %}
+
+                    <th scope="row">
+                        <a href="{% url 'properties:unit' lease.unit.id %}">
+                            {{lease.unit}}
+                        </a>
+                    </th>
+
+                    <td>
+                        <a href="#">
+                            {{lease.tenant}}
+                        </a>
+                    </td>
+
+                    <td>{{lease.start|date:"d-m-Y"}}</td>
+                    <td>{{lease.end|date:"d-m-Y"}}</td>
+                
+                    
+
+                </tr>
+                {% empty %}
+                <tr>
+                    <td class="text-center" colspan="100">No Leases Available</td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+        <hr>
+    </div>
+
+    <div class="table-responsive col-12">
+        <h4>Invoices</h4>
+        <table class="table table-hover table-sm table-striped mt-2 shadow-m">
+            <thead class="bg-3">
+                <tr>
+                    <th scope="col">Status</th>
+                    <th scope="col">Contact</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Amount/ Paid</th>
+                    <th scope="col">Balance</th>
+                    <th scope="col">Due Date</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for invoice in unit.invoices.all %}
+
+
+                <tr>
+
+                    {% if invoice.status == 'Partial' %}
+                    <th scope="row" class="text-light bg-secondary">{{invoice.status}}</th>
+                    {% elif invoice.status == 'Paid' %}
+                    <th scope="row" class="text-light bg-success">{{invoice.status}}</th>
+                    {% elif invoice.status == 'Overdue' %}
+                    <th scope="row" class="text-light bg-danger">{{invoice.status}}</th>
+                    {% elif invoice.status == 'Open' %}
+                    <th scope="row" class="text-light bg-info">{{invoice.status}}</th>
+
+                    {% endif %}
+
+                    <th scope="row">
+                        <a href="{% url 'contacts:contact' invoice.contact.id %}">
+                            {{invoice.contact}}
+                        </a>
+                    </th>
+                    <td>{{invoice.category}}</td>
+                    <td class="font-weight-bold">{{invoice.amount}}$ / {{invoice.amount_paid}}$</td>
+
+                    {% if invoice.balance %}
+                    <td class="text-danger font-weight-bold">
+                        {{invoice.balance}}$
+                    </td>
+                    {% else %}
+                    <td class="font-weight-bold">
+                        {{invoice.balance}}$
+                    </td>
+                    {% endif %}
+
+                    <td class="font-weight-bold">{{invoice.due_date|date:"d-m-Y"}}</td>
+
+                    <td>
+                        <a class="btn-sm btn-success font-weight-normal"
+                            href="{% url 'accounting:rec_payment' invoice.id %}">
+                            Payment
+                        </a>
+
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td class="text-center" colspan="100">No Invoices Available</td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+        <hr>
+    </div>
+
+    <div class="col-12">
+        <h4>Unit Description</h4>
+        <p style="white-space: pre-line;" class="mt-n4">
+            {{unit.description}}
+        </p>
+    </div>
+</div>
+{% endblock body %}

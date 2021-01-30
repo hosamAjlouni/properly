@@ -1,0 +1,95 @@
+{% extends 'home/base.html' %}
+{% load widget_tweaks %}
+
+{% block header %}
+<!-- <a href="{% url 'properties:add' %}" class="float-right btn btn-info"><strong>+</strong>Add Property</a> -->
+
+{% endblock header %}
+
+{% block body %}
+<hr class="mt-n3 mb-3">
+
+<h5>
+    Filter Results
+    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-filter" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+    </svg>
+</h5>
+
+<form class="from" method='get' action="">
+
+    <div class="d-flex flex-wrap justify-content-start mx-n3 mb-3">
+
+
+        <div class="form-group col-xl-2 col-lg-3 col-sm-4 col-4 my-0 ">
+            <small>{{leaseFilter.form.property.label}}</small>
+            {% render_field leaseFilter.form.property class="form-control form-control-sm shadow-sm" %}
+        </div>
+        <div class="form-group col-xl-2 col-lg-3 col-sm-4 col-4 my-0 ">
+            <small>{{leaseFilter.form.unit.label}}</small>
+            {% render_field leaseFilter.form.unit class="form-control form-control-sm shadow-sm" %}
+        </div>
+        <div class="form-group col-xl-2 col-lg-3 col-sm-4 col-4 my-0 ">
+            <small>{{leaseFilter.form.tenant.label}}</small>
+            {% render_field leaseFilter.form.tenant class="form-control form-control-sm shadow-sm" %}
+        </div>
+
+    </div>
+
+    <button class="btn btn-info form-control" type="submit">
+        Filter
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-filter" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+        </svg>
+    </button>
+
+</form>
+
+<div class="table-responsive">
+    <table class="table table-hover table-striped mt-2 shadow-sm">
+        <thead class="bg-3">
+            <tr>
+                <th scope="col">Status</th>
+                <th scope="col">Residence</th>
+                <th scope="col">Tenant</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lease in qs %}
+
+            <tr>
+                {% if lease.status == 'future' %}
+                <th scope="row" class="text-light bg-primary">{{lease.status|title}}</th>
+                {% elif lease.status == 'active' %}
+                <th scope="row" class="text-light bg-success">{{lease.status|title}}</th>
+                {% elif lease.status == 'past' %}
+                <th scope="row" class="text-light bg-danger">{{lease.status|title}}</th>
+                {% endif %}
+                <th scope="row">
+                    <a href="{% url 'properties:unit' lease.unit.id %}">
+                        {{lease.unit}}
+                    </a>
+                </th>
+                
+                <td>
+                    <a href="{% url 'contacts:contact' lease.tenant.id %}">
+                        {{lease.tenant}}
+                    </a>
+                </td>
+
+                <td>{{lease.start|date:"d-m-Y"}}</td>
+                <td>{{lease.end|date:"d-m-Y"}}</td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td class="text-center" colspan="100">No Leases Available</td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock body %}

@@ -1,0 +1,181 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-d sticky-top shadow-sm">
+
+    <a class="navbar-brand" href="{% url 'home:index' %}">
+        <strong style="font-style: ;">
+            <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-house-fill" fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                    d="M8 3.293l6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
+                <path fill-rule="evenodd"
+                    d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z" />
+            </svg>
+            Properly
+        </strong>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+
+        <!---------------------------------------------------------------- Navbar middle ------------------------------------------------------->
+        
+        
+        <ul class="navbar-nav mr-auto mx-auto">
+            {% if request.user.is_authenticated %}
+
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'home:index' %}">Home<span class="sr-only">(current)</span></a>
+            </li>
+
+            <li class="nav-item dropdown">
+
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Properties
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'properties:all' %}">Properties</a>
+                    <a class="dropdown-item" href="{% url 'properties:units' %}">Units</a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item" href="{% url 'properties:add' %}">Add Property</a>
+                </div>
+
+            </li>
+
+            <li class="nav-item dropdown">
+
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Contacts
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'contacts:all' %}">All Contacts</a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item" href="{% url 'contacts:add' %}">Add Contact</a>
+                </div>
+
+            </li>
+
+            <li class="nav-item dropdown">
+
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Leases
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'leases:all' %}">All Leases</a>
+                    <a class="dropdown-item" href="{% url 'leases:active' %}">Active Leases</a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item" href="{% url 'leases:add' %}">Add Lease</a>
+                </div>
+
+            </li>
+
+            <li class="nav-item dropdown">
+
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Accounting
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href=" {% url 'accounting:invoices' %} ">Invoices</a>
+
+                    <!-- <div class="dropdown-divider"></div> -->
+
+                    <!-- <a class="dropdown-item" href=" {% url 'accounting:add_invoice' %} ">Add Invoice</a>
+                    <a class="dropdown-item" href="#">Something else here</a> -->
+                </div>
+
+            </li>
+
+            <!-- <li class="nav-item dropdown">
+
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Manage
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#">Manage Properties</a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+
+                </div>
+
+            </li> -->
+
+
+            <!-- <li class="nav-item">
+                <a class="nav-link" href="#">Features</a>
+            </li> -->
+
+            {% endif %}
+        </ul>
+
+        <!---------------------------------------------------------------- Navbar middle ------------------------------------------------------->
+
+        <!--------------------------------------------------------------- Navbar right side ---------------------------------------------------->
+        <ul class="navbar-nav float-lg-right">
+
+            {% if user.is_authenticated %}
+
+            <li class="nav-item dropdown">
+
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Welcome {{user.username|title}}!
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'home:index' %}">{{user.username|title}}</a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a>
+                </div>
+
+            </li>
+            <!-- 
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'users:logout' %}">Logout</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'home:index' %}">Welcome {{user.username|title}}!</a>
+            </li> -->
+
+            {% else %}
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'users:login' %}">Login</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'users:register' %}">Register</a>
+            </li>
+
+            {% endif %}
+
+        </ul>
+        <!--------------------------------------------------------------- Navbar right side ---------------------------------------------------->
+
+    </div>
+
+</nav>
+<br>

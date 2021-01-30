@@ -1,0 +1,62 @@
+{% extends 'home/base.html' %}
+
+{% block header %}
+<!-- <a href="{% url 'properties:add' %}" class="float-right btn btn-info"><strong>+</strong>Add Property</a> -->
+
+{% endblock header %}
+
+{% block body %}
+
+<div class="table-responsive">
+    <table class="table table-hover table-striped mt-2 shadow-sm">
+        <thead class="bg-3">
+            <tr>
+                <th scope="col">Status</th>
+                <th scope="col">Residence</th>
+                <th scope="col">Tenant</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lease in leases %}
+            
+            {% if lease.is_active %}
+                
+                
+            <tr>
+                {% if lease.status == 'future' %}
+                <th scope="row" class="text-light bg-primary">{{lease.status|title}}</th>
+                {% elif lease.status == 'active' %}
+                <th scope="row" class="text-light bg-success">{{lease.status|title}}</th>
+                {% elif lease.status == 'past' %}
+                <th scope="row" class="text-light bg-danger">{{lease.status|title}}</th>
+                {% endif %}
+                <th scope="row">
+                    <a href="{% url 'properties:unit' lease.unit.id %}">
+                        {{lease.unit}}
+                    </a>
+                </th>
+                
+                <td>
+                    <a href="{% url 'contacts:contact' lease.tenant.id %}">
+                        {{lease.tenant}}
+                    </a>
+                </td>
+
+                <td>{{lease.start|date:"d-m-Y"}}</td>
+                <td>{{lease.end|date:"d-m-Y"}}</td>
+                
+            </tr>
+            {% endif %}
+
+            {% empty %}
+            <tr>
+                <td class="text-center" colspan="100">No Leases Available</td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock body %}

@@ -1,0 +1,35 @@
+{% extends 'home/base.html' %}
+
+{% block body %}
+    
+
+    <form class="mx-auto col-md-5 col-sm-12" action="{% url 'properties:add' %}" method="POST">
+        <h3 class="">{{form_title}}</h3>
+        <hr>
+
+        {% csrf_token %}
+        {% for error in form.non_field_errors %}
+            <div class="form-group alert alert-danger">
+                {{ error }}
+            </div>
+        {% endfor %}
+
+        {% for field in form %}
+            <div class="form-group">
+                {{field.label}}
+                {{field}}
+    
+                {% for error in field.errors %}
+                    <small class=" alert-danger">{{ error }}</small>
+                {% endfor %}
+
+                
+            </div>
+            {% endfor %}
+
+        
+        <button type="submit" class="btn btn-info form-control shadow-sm">Submit</button>
+    
+    </form>
+    
+{% endblock body %}

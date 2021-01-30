@@ -1,0 +1,135 @@
+{% extends 'home/base.html' %}
+{% load widget_tweaks %}
+
+{% block header %}
+<div class="btn-group-sm">
+    <a href="{% url 'accounting:add_invoice' %}" class="btn btn-sm btn-info">
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-plus" fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd"
+        d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z" />
+            <path fill-rule="evenodd"
+            d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5z" />
+        </svg>
+        New Invoice
+    </a>
+</div>
+{% endblock header %}
+
+{% block body %}
+<hr class="mt-n3 mb-3">
+<h5>
+    Filter Results
+    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-filter" fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd"
+            d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+    </svg>
+</h5>
+
+<form class="from" method='get' action="">
+
+    <div class="d-flex flex-wrap justify-content-start mx-n3 mb-3">
+
+        <div class="form-group col-xl-2 col-lg-3 col-sm-4 col-4 my-0 ">
+            <small>{{filter.form.amount.label}}</small>
+            {% render_field filter.form.amount class="form-control form-control-sm shadow-sm" %}
+        </div>
+        <div class="form-group col-xl-2 col-lg-3 col-sm-4 col-4 my-0 ">
+            <small>{{filter.form.category.label}}</small>
+            {% render_field filter.form.category class="form-control form-control-sm shadow-sm" %}
+        </div>
+        <div class="form-group col-xl-2 col-lg-3 col-sm-4 col-4 my-0 ">
+            <small>{{filter.form.due_date.label}}</small>
+            {% render_field filter.form.due_date class="form-control form-control-sm shadow-sm" %}
+        </div>
+        <div class="form-group col-xl-2 col-lg-3 col-sm-4 col-4 my-0 ">
+            <small>{{filter.form.property.label}}</small>
+            {% render_field filter.form.property class="form-control form-control-sm shadow-sm" %}
+        </div>
+        <div class="form-group col-xl-2 col-lg-3 col-sm-4 col-4 my-0 ">
+            <small>{{filter.form.unit.label}}</small>
+            {% render_field filter.form.unit class="form-control form-control-sm shadow-sm" %}
+        </div>
+        <div class="form-group col-xl-2 col-lg-3 col-sm-4 col-4 my-0 ">
+            <small>{{filter.form.contact.label}}</small>
+            {% render_field filter.form.contact class="form-control form-control-sm shadow-sm" %}
+        </div>
+    </div>
+
+
+
+
+    <button class="btn btn-info form-control" type="submit">
+        Filter
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-filter" fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+                d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+        </svg>
+    </button>
+
+</form>
+
+<div class="table-responsive">
+    <table class="table table-hover table-striped mt-2 shadow-m">
+        <thead class="bg-3">
+            <tr>
+                <th scope="col">Status</th>
+                <th scope="col">Due Date</th>
+                <th scope="col">Unit</th>
+                <th scope="col">Category</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Amount/ Paid</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in invoices %}
+
+            <tr>
+
+
+                {% if invoice.status == 'Partial' %}
+                <th scope="row" class="text-light bg-secondary">{{invoice.status}}</th>
+                {% elif invoice.status == 'Paid' %}
+                <th scope="row" class="text-light bg-success">{{invoice.status}}</th>
+                {% elif invoice.status == 'Overdue' %}
+                <th scope="row" class="text-light bg-danger">{{invoice.status}}</th>
+                {% elif invoice.status == 'Open' %}
+                <th scope="row" class="text-light bg-info">{{invoice.status}}</th>
+
+                {% endif %}
+
+
+                <td class="font-weight-bold">{{invoice.due_date|date:"d-m-Y"}}</td>
+                <td>
+                    <a href="{% url 'properties:unit' invoice.unit.id %}">
+                        {{invoice.unit}}
+                    </a>
+                </td>
+                <td>{{invoice.category}}</td>
+                <td class="font-weight-bold">
+                    <a href="{% url 'contacts:contact' invoice.contact.id %}">
+                        {{invoice.contact}}    
+                    </a>
+                </td>
+                <td class="font-weight-bold">{{invoice.amount}}$ / {{invoice.amount_paid}}$</td>
+
+                <td>
+                    <a class="btn-sm btn-success font-weight-normal"
+                        href="{% url 'accounting:rec_payment' invoice.id %}">Payment</a>
+                </td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td class="text-center" colspan="100">No Invoices Available</td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock body %}
