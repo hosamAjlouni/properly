@@ -18,10 +18,12 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
+            
             if 'next' in request.POST:
                 return HttpResponseRedirect(request.POST['next'])
             else:
                 return HttpResponseRedirect(reverse("home:index"))
+            
         else:
             return render(request, "users/login.html", {
                 'form_title'     : "Login",
